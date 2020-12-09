@@ -15,4 +15,3 @@ $ conda activate kraken2 # activate the environment
 # Kraken 2 Installation
 $ conda install -c bioconda kraken2 -y # installing kraken2 in the new environment
 
-
