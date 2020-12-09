@@ -1,2 +1,1 @@
-# metagenomics-pipelines
 metagenomics-pipelines
