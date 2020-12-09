@@ -14,3 +14,6 @@ $ conda activate qiime2-2020.11 # activate the environment
 
 # QIIME2 Installation
 $ conda install -c qiime2/label/r2020.11 qiime2 -y # installing qiime2 release 2020.11 in the new environment
+
+
+
