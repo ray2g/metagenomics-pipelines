@@ -9,7 +9,7 @@ conda activate R_4.0.0
  
 # install R v4.0.0 with conda________________________________________________//
  
- conda install -c conda-forge r-base=4.0.0 -y 
+conda install -c conda-forge r-base=4.0.0 -y 
  
 R --version # check R version (4.0.0)
  
