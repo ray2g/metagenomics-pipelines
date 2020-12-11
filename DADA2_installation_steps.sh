@@ -28,3 +28,4 @@ packageVersion("dada2") # # check DADA2 version (1.16.0)
 # install dependencies
 
 install.packages("ggplot2")
+
