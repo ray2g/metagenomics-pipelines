@@ -1,3 +1,4 @@
+#!/bin/bash
 ## João Raimundo @BioData.pt
 
 # Create a new environment to install R v4.0.0 (optional)_____________________//
