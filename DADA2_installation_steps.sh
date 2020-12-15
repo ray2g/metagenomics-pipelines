@@ -25,7 +25,11 @@ BiocManager::install("dada2", version = "3.11")
 
 packageVersion("dada2") # # check DADA2 version (1.16.0)
 
-# install dependencies
+# install dependencies________________________________________/
 
+# ggplot2
 install.packages("ggplot2")
+
+# DT
+install.packages('DT')
 
