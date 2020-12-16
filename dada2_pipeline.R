@@ -1,8 +1,9 @@
-## Joao Raimundo @BioData.pt ----------------------///
+## João Raimundo @BioData.pt ----------------------///
 
 #______Import_Packages________________________//
 
-message('>>> Importing Packages... \n')
+message('\nDADA2 Pipeline\nJoão Raimundo @BioData.pt\n')
+message('\n>>> Importing Packages... \n')
 
 library("dada2") 
 library("ggplot2")
@@ -23,7 +24,7 @@ tables_dir <- "~/Desktop/dada2_test/tables" # set the directory to save the tabl
 
 taxonomy_dir <- "~/Desktop/dada2_test/taxonomy" # set the directory for taxonomy databases and to save R objects ## CHANGE ME
 
-message("\n>> Reading data... \n") 
+message("\n>>> Reading data... \n") 
 list.files(path)
 
 
@@ -43,8 +44,9 @@ message("\n>>> Inspecting Read Quality Profiles... \n")
 fwd_qualityProfile <- plotQualityProfile(fl = fastqFwdPath) # forward 
 rev_qualityProfile <- plotQualityProfile(fl = fastqRevPath) # reverse
 
-message("\n>> Saving read quality profile plots on: ", paste0("\n"), plot_dir, paste0("/fwd_qualityProfile.png"), 
-                                                     paste0("\n"), plot_dir, paste0("rev_qualityProfile.png"), paste0("\n"))
+message("\n>> Saving read quality profile plots on:\n")
+message(plot_dir, paste0("/fwd_qualityProfile.png"))
+message(plot_dir, paste0("rev_qualityProfile.png"), paste0("\n"))
 
 # saving quality profiles plots
 ggsave(filename = "fwd_qualityProfile.png", plot = fwd_qualityProfile, path = plot_dir, width = 12, height = 8)
@@ -76,7 +78,6 @@ message(">> Number of sequences kept after filtering/trimming in relation to the
 filterTrimReads
 
 message("\n")
-
 message(">>> Inspecting Trimmed Read Quality Profiles... \n")
 
 # forward quality plots after filtering and trimming
@@ -85,37 +86,40 @@ fwd_trimmed_qualityProfile <- plotQualityProfile(fl = filtFastqFwdPath)
 # reverse quality plots after filtering and trimming
 rev_trimmed_qualityProfile <- plotQualityProfile(fl = filtFastqRevPath)
 
-message(">> Saving trimmed reads quality profile plots on: ", 
-        paste0("\n"), plot_dir, paste0("/fwd_qualityProfile_trimmed.png"), 
-        paste0("\n"), plot_dir, paste0("/rev_qualityProfile_trimmed.png"), paste0("\n"))
+message(">> Saving trimmed reads quality profile plots on:\n") 
+message(plot_dir, paste0("/fwd_qualityProfile_trimmed.png"))
+message(plot_dir, paste0("/rev_qualityProfile_trimmed.png"), paste0("\n"))
+
 
 # saving trimmed reads quality profiles plots
 ggsave(filename = "fwd_qualityProfile_trimmed.png", plot = fwd_trimmed_qualityProfile, path = plot_dir, width = 12, height = 8)
 ggsave(filename = "rev_qualityProfile_trimmed.png", plot = rev_trimmed_qualityProfile , path = plot_dir, width = 12, height = 8)
 
-message(">> Saving the trimmed summary table on: \n", 
-        tables_dir, paste0("/number_sequences_before_and_after_trimming.csv\n"))
+message(">> Saving the trimmed summary table on:\n") 
+message(tables_dir, paste0("/number_sequences_before_and_after_trimming.tsv\n"))
 
 # save table filterTrimReads
-write.csv(filterTrimReads,paste0(tables_dir,"/number_sequences_before_and_after_trimming.csv"))
+write.table(x = filterTrimReads, file = paste0(tables_dir,"/number_sequences_before_and_after_trimming.tsv"), 
+            sep = "\t", row.names = FALSE, quote = FALSE) 
 
 #____Learning_the_Error_Rates_________________________________________________________________________________________//
 
 message(">>> Learning the Error Rates... \n")
 
 # model/learn the error rates for the filtered fastq files
-message(">> Forward reads:")
+message("> Forward reads:")
 errFwd <- learnErrors(fls = filtFastqFwdPath, multithread = TRUE) # fwd
-message("\n>> Reversed reads:")
+
+message("\n> Reversed reads:")
 errRev <- learnErrors(fls = filtFastqRevPath, multithread = TRUE) # rev
 
 # Plot errors 
 fwd_plotErrors <- plotErrors(dq = errFwd, nominalQ = TRUE) # fwd
 rev_plotErrors <- plotErrors(dq = errRev, nominalQ = TRUE) # rev
 
-message("\n>> Saving error rate plots for forward and reverse trimmed reads on: ", 
-        paste0("\n"), plot_dir, paste0("/fwd_error_rate_plot.png"),
-        paste0("\n"), plot_dir, paste0("/rev_error_rate.png"), paste0("\n"))
+message("\n>> Saving error rate plots for forward and reverse trimmed reads on:")
+message(paste0("\n"), plot_dir, paste0("/fwd_error_rate_plot.png"))
+message(plot_dir, paste0("/rev_error_rate.png"), paste0("\n"))
 
 # saving error rate plots for forward and reverse trimmed reads
 ggsave(filename = "fwd_error_rate_plot.png", plot = fwd_plotErrors, path = plot_dir, width = 12, height = 7)
@@ -129,15 +133,16 @@ ggsave(filename = "rev_error_rate_plot.png", plot = rev_plotErrors, path = plot_
 
 message("\n>>> Denoising Sequences... \n")
 
-message(">> Forward reads: ")
+message("> Forward reads: ")
 dadaFwd <- dada(derep = filtFastqFwdPath, err = errFwd, multithread = TRUE) # denoise fwd seqs
-message("\n>> Reverse reads: ")
+message("\n> Reverse reads: ")
 dadaRev <- dada(derep = filtFastqRevPath, err = errRev, multithread = TRUE) # denoise rev seqs
 
 # inspect results
-message("\n>> Inspect Forward reads: ")
+message("\n>> Inspect Forward reads: ") # fwd
 dadaFwd[[1]]
-message("\n>> Inspect Reverse reads: ")
+
+message("\n>> Inspect Reverse reads: ") #rev 
 dadaRev[[1]]
 
 
@@ -157,12 +162,11 @@ message("\n>>> Constructing the ASV table... \n")
 # Make an ASV table
 asvTbl <- makeSequenceTable(samples = mergePE) # tabulate ASVs
 
-message("\n>> Saving the ASV table on: \n", 
-        tables_dir, paste0("/asv_table.csv\n"))
+message("\n>> Saving the ASV table on: \n", tables_dir, paste0("/asv_table.tsv\n"))
 
 # save table filterTrimReads
-write.csv(asvTbl ,paste0(tables_dir,"/asv_table.csv"))
-
+write.table(x = asvTbl, file = paste0(tables_dir,"/asv_table.tsv"), 
+            sep = "\t", row.names = FALSE, quote = FALSE) 
 
 #____Remove_Chimeras___________________________________________________________________________//
 
@@ -173,10 +177,11 @@ asvTblNoChim <- removeBimeraDenovo(unqs = asvTbl, method = "consensus",
                                    multithread = TRUE, verbose = TRUE) 
 
 message("\n>> Saving the ASV table without Chimeras on: \n", 
-        tables_dir, paste0("/asv_table_without_chimeras.csv\n"))
+        tables_dir, paste0("/asv_table_without_chimeras.tsv\n"))
 
 # save table filterTrimReads
-write.csv(asvTblNoChim ,paste0(tables_dir,"/asv_table_without_chimeras.csv"))
+write.table(x = asvTblNoChim, file = paste0(tables_dir,"/asv_table_without_chimeras.tsv"), 
+            sep = "\t", row.names = FALSE, quote = FALSE) 
 
 
 #____Track_Reads_throught_the_pipeline___________________________________________________________________________//
@@ -200,55 +205,64 @@ rownames(summaryTblSeq) <- sampleNames
 summaryTblSeqPerc <- apply(X = summaryTblSeq, MARGIN = 2, function(x) x / summaryTblSeq[,1] * 100)
 
 message(">> Saving the table with absolute and percentage values that summarize the number of reads kept in each pipeline step on:")
-message("\n> Absolute table: ", tables_dir, paste0("/summary_sequences_absolute.csv"))
-message("> Percentage table: ", tables_dir, paste0("/summary_sequences_percentage.csv\n"))
+message("\n> Absolute table: ", tables_dir, paste0("/summary_sequences_absolute.tsv"))
+message("> Percentage table: ", tables_dir, paste0("/summary_sequences_percentage.tsv\n"))
  
 # save table filterTrimReads
-write.csv(summaryTblSeq, paste0(tables_dir,"/summary_sequences_absolute.csv"))
-write.csv(summaryTblSeqPerc, paste0(tables_dir,"/summary_sequences_percentage.csv"))
+write.table(x = summaryTblSeq, file = paste0(tables_dir,"/summary_sequences_absolute.tsv"), 
+            sep = "\t", row.names = FALSE, quote = FALSE) 
+
+write.table(x = summaryTblSeqPerc, file = paste0(tables_dir,"/summary_sequences_percentage.tsv"), 
+            sep = "\t", row.names = FALSE, quote = FALSE) 
 
 
 #____Assign_Taxonomy______________________________________________________________________________________________________//
 
-message("\n>>> Assignining Taxonomy against the non-redundant SILVA database v138... \n")
+message(">>> Assignining Taxonomy against the non-redundant SILVA database v138... \n")
 
 # naive Bayes classifier - # assign taxonomy against the SILVA database (version 138)
 taxTbl <- assignTaxonomy(seqs = asvTblNoChim, 
                          refFasta = paste0(taxonomy_dir,"/database/silva_nr99_v138_train_set.fa.gz"), 
                          multithread = TRUE)
 
-message("\n> Adding species into the previous assignment based on 100% match...\n")
+message("\n>>> Adding species into the previous assignment based on 100% match...\n")
 
 # add species into the previous assignment based on 100% match
 taxTbl <- addSpecies(taxtab = taxTbl, refFasta = paste0(taxonomy_dir,"/database/silva_species_assignment_v138.fa.gz"))
 
 
-####----------------------------------_#####
+#___keep_the_trackability_of_ASVs_______________________________________________________________________________________/
 
-# keep the trackability of ASVs 
 # add a new column with the new ASV labels/ids to the taxonomy table
-taxTbl2 <- cbind(taxTbl, "ASV" = paste0("ASV_", 1:nrow(taxTbl))) 
+taxTbl2 <- cbind("ASV" = paste0("ASV_", 1:nrow(taxTbl)),taxTbl)
 
 # substitute the DNA sequences in rownames by the new identifiers/tags/ids "ASV_nrSeq" in the taxonomy table
-rownames(taxTbl2) <- taxTbl2[,8] 
+rownames(taxTbl2) <- taxTbl2[,1] 
+
+message(">> Saving ASV DNA Sequences on:\n")
+message(paste0(path ,"asvFastaDNASequences.fasta"))
 
 # retrieve the DNA sequences 
-uniquesToFasta(asvTblNoChim, paste0(tables_dir,"/asvFastaDNASequences.fasta"), ids = taxTbl2[,8])
+uniquesToFasta(asvTblNoChim, paste0(path ,"asvFastaDNASequences.fasta"), ids = taxTbl2[,1])
 
 # do the same for the ASV table (with the distribution)
 asvTblNoChim2 <- asvTblNoChim # copy ASV table
-colnames(asvTblNoChim2) <- taxTbl2[,8] # substitute column DNA sequences names by "ASV_nrSeq" in the ASV table
+colnames(asvTblNoChim2) <- taxTbl2[,1] # substitute column DNA sequences names by "ASV_nrSeq" in the ASV table
 asvTblNoChim2 <- t(asvTblNoChim2) # transpose the ASV matrix table 
 asvTblNoChim2 <- as.data.frame(asvTblNoChim2)
-asvTblNoChim2[,"ASV_ID"] <- rownames(asvTblNoChim2)
+ASV_ID <- rownames(asvTblNoChim2)
+asvTblNoChim2 <- cbind(ASV_ID, asvTblNoChim2)
 
-message("\n> Saving ASV and Taxonomy tables in R format on:\n")
-message("ASV table: ", paste0(taxonomy_dir,"/objects/asvTblNoChim.rds"))
-message("Taxonomy table: ", paste0(taxonomy_dir,"/objects/taxTbl.rds\n"))
+message("\n>> Saving ASV and Taxonomy tables in tsv format on:\n")
+message("> ASV table: ", paste0(tables_dir,"/taxTbl.tsv"))
+message("> Taxonomy table: ", paste0(tables_dir,"/taxTbl.tsv"))
 
-# save ASV and taxonomy tables in R format 
-saveRDS(object = asvTblNoChim2, file = paste0(taxonomy_dir,"/objects/asvTblNoChim.rds")) # save ASV table
-saveRDS(object = taxTbl2, file = paste0(taxonomy_dir,"/objects/taxTbl.rds")) # save taxonomy table
+# save ASV and taxonomy tables in TSV format
+write.table(x = asvTblNoChim2, file = paste0(tables_dir,"/asvTblNoChim.tsv"), 
+            sep = "\t", row.names = FALSE, quote = FALSE) # save ASV table
+
+write.table(x = taxTbl2, file = paste0(tables_dir,"/taxTbl.tsv"), 
+            sep = "\t", row.names = FALSE, quote = FALSE) # save taxonomy table 
 
 # put taxonomy in a compatible format to convert it latter to biom format
 tax2biom <- function(taxTable) {
@@ -281,15 +295,45 @@ tax2biom <- function(taxTable) {
         }
         
         taxTable2Biom <- data.frame(id, fullTax)
-        colnames(taxTable2Biom) <- c("ASV_ID", "taxonomy")
+        colnames(taxTable2Biom) <- c("ASV_ID", "Taxonomy")
         
         return(taxTable2Biom)
 }
 
 taxTbl2 <- tax2biom(taxTbl2) 
 
-# Join ASV and Taxonomy tables into one
-## exclude the "ID" first column from "taxTbl2" because "asvTblNoChim2" has already this information
-asvTaxTbl <- cbind(asvTblNoChim2, "taxonomy" = taxTbl2[,-1]) 
+message("\n\n>>> Joining ASV and Taxonomy tables into one...\n")
 
-write.table(x = asvTaxTbl, file = paste0(tables_dir,"/asvTaxTbl.txt"), sep = "\t", row.names = FALSE, quote = FALSE) # save ASV-taxonomy tables
+# Join ASV and Taxonomy tables into one - exclude the "ID" first column from "taxTbl2" 
+# because "asvTblNoChim2" has already this information
+asvTaxTbl <- cbind(asvTblNoChim2, "Taxonomy" = taxTbl2[,-1]) 
+
+message(">> Saving the joined ASV-Taxonomy table in TSV format on:\n")
+message(paste0(tables_dir,"/asvTaxTbl.tsv"))
+
+# save ASV-taxonomy table
+write.table(x = asvTaxTbl, file = paste0(tables_dir,"/asvTaxTbl.tsv"), sep = "\t", row.names = FALSE, quote = FALSE)
+
+message("\n\n>>> Converting ASV-Taxonomy table into BIOM format...\n")
+
+# convert asvTaxTbl table into biom - function
+convertTab2Biom <- function(inFile, outFile) {
+  
+  if (system("command -v biom", ignore.stdout = TRUE, ignore.stderr = TRUE) !=0)  {
+    
+    stop("biom program is not installed or it is not accessible!\n  Exiting...")
+    
+  }
+  
+  system(paste("biom convert", "-i", inFile, "-o", outFile, "--to-hdf5", 
+               '--table-type="OTU table"', "--process-obs-metadata taxonomy"))
+  
+}
+
+# convert ASV table with taxonomy in tab-delimited format into biom format  
+convertTab2Biom(inFile = paste0(tables_dir,"/asvTaxTbl.tsv"), outFile = paste0(tables_dir,"/asvTaxTbl.biom"))
+
+message(">> Saving the joined ASV-Taxonomy table in BIOM format on:\n")
+message(paste0(tables_dir,"/asvTaxTbl.biom"))
+                           
+                           
