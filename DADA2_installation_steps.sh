@@ -6,7 +6,14 @@
 conda create --name R_4.0.0  # create a new conda env for testing R v4.0.0
  
 conda activate R_4.0.0
+
+# install biom converter_____________________________________________________//
  
+pip install numpy
+pip install biom-format 
+pip install h5py
+eval "$(_BIOM_COMPLETE=source biom)"
+
 # install R v4.0.0 with conda________________________________________________//
  
 conda install -c conda-forge r-base=4.0.0 -y 
