@@ -6,12 +6,12 @@ metagenomics-pipelines
 
 ## DADA2
 
-> ### Inputs:
+### Inputs:
 * fastq samples (fastq)
 * Silva_train_set.fa.gz (assigning taxonomy)
 * Silva_species.fa.gz  (assigning taxonomy)
 
-> ### Outputs:
+### Outputs:
 * number_sequences_before_and_after_trimming.tsv (filter/trimming)
 * asv_table.tsv (asv table with chimeras)
 * summary_sequences_absolute.tsv (Track Reads through the pipeline -absolute)
