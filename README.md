@@ -1,4 +1,4 @@
-metagenomics-pipelines
+# Metagenomic Pipelines
 
 ----
 
