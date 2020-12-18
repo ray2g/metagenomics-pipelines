@@ -2,7 +2,7 @@
 
 <br>
 
-### DADA2
+> ### DADA2
 
 #### Inputs:
 * fastq samples 
