@@ -9,6 +9,7 @@
 * Silva_train_set.fa.gz (assigning taxonomy)
 * Silva_species.fa.gz  (assigning taxonomy)
 
+
 ### Outputs:
 * number_sequences_before_and_after_trimming.tsv (filter/trimming)
 * asv_table.tsv (asv table with chimeras)
