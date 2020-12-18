@@ -330,10 +330,12 @@ convertTab2Biom <- function(inFile, outFile) {
   
 }
 
+message(">> Saving the joined ASV-Taxonomy table in BIOM format on:\n")
+message(paste0(tables_dir,"/asvTaxTbl.biom"))                           
+                           
 # convert ASV table with taxonomy in tab-delimited format into biom format  
 convertTab2Biom(inFile = paste0(tables_dir,"/asvTaxTbl.tsv"), outFile = paste0(tables_dir,"/asvTaxTbl.biom"))
 
-message(">> Saving the joined ASV-Taxonomy table in BIOM format on:\n")
-message(paste0(tables_dir,"/asvTaxTbl.biom"))
+
                            
                            
