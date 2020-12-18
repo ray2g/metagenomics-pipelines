@@ -2,12 +2,12 @@
 
 <br>
 
-> ### DADA2
+### DADA2
 
-#### Inputs:
-* fastq samples 
-* Silva_train_set.fa.gz (assigning taxonomy)
-* Silva_species.fa.gz  (assigning taxonomy)
+> #### Inputs:
+> * fastq samples 
+> * Silva_train_set.fa.gz (assigning taxonomy)
+> * Silva_species.fa.gz  (assigning taxonomy)
 
 
 #### Outputs:
