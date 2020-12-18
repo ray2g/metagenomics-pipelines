@@ -1,7 +1,5 @@
 # Metagenomic Pipelines
 
-----
-
 <br>
 
 ## DADA2
